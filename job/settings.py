@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +26,7 @@ SECRET_KEY = 'etdq)uvq=t0rc&ams5_ovn6w8bcwknjj0u97*(#n^(76x*+dr1'
 DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1:8000, djobportal.herokuapp.com']
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://proyou.onrender.com/']
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -53,13 +52,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'user_visit.middleware.UserVisitMiddleware',   
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
@@ -99,16 +98,15 @@ WSGI_APPLICATION = 'job.wsgi.application'
 #     }
 # }
 
+
 DATABASES = {
-    "default": dj_database_url.parse("postgresql://proyou_postgres_user:LQukEHMisQ776Q8YwRZiboxsz3655K3c@dpg-d0lmsc9r0fns738h6vd0-a.oregon-postgres.render.com/proyou_postgres")
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+
 #for debug toolbar
 INTERNAL_IPS = [
     # ...
@@ -174,7 +172,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
